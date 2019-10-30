@@ -1,7 +1,8 @@
-package com.anand.geneticalgorithms;
+package com.anand.geneticalgorithms.driver;
 
 import java.util.Arrays;
 
+import com.anand.geneticalgorithms.Population;
 import com.anand.geneticalgorithms.algorithm.GeneticAlgorithm;
 
 /**
