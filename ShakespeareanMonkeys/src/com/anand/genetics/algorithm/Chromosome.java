@@ -40,6 +40,11 @@ public class Chromosome {
 		newFitness /= GeneticAlgorithm.getExpectedCharSequence().length();
 		return newFitness;
 	}
+	
+	private double optimizedFitness() {
+		double newFitness = recalculateFitness();
+		return Math.pow(newFitness, 4);
+	}
 
 	public char[] getTypedCharSequence() {
 		isFitnessChaged = true;
@@ -53,7 +58,7 @@ public class Chromosome {
 	public double getFitness() {
 		if (isFitnessChaged) {
 			isFitnessChaged = false;
-			fitness = recalculateFitness();
+			fitness = optimizedFitness();
 		}
 		return fitness;
 	}
