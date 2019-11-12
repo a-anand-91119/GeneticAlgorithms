@@ -1,6 +1,5 @@
 package com.anand.genetics.sudoku;
 
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -13,6 +12,7 @@ public class Chromosome {
 	private int[][] gene = new int[9][9];
 	private double fitness;
 	private boolean isFitnessChanged = true;
+	private static Random random = new Random();
 
 	public static void main(String[] args) {
 		Chromosome chromosome = new Chromosome();
@@ -23,48 +23,51 @@ public class Chromosome {
 	}
 
 	public Chromosome initialize() {
-		Random random = new Random();
 		for (int i = 0; i < 9; i++)
 			for (int j = 0; j < 9; j++)
 				gene[i][j] = random.nextInt(9) + 1;
 		return this;
 	}
 
+	
 	private double recalculateFitness() {
-		double duplicates = 0;
-		for (int i = 0; i < 9; i++)
-			duplicates += checkRow(gene, i, 9);
-		for (int i = 0; i < 9; i++)
-			duplicates += checkColumn(gene, 9, i);
-		for (int i = 0; i < 9; i++)
-			for (int j = 0; j < 9; j++)
-				if(gene[i/3][i%3] == gene[j/3][j%3])
-					duplicates++;
-		return 1 - (duplicates / (double) 81);
+		double score = 0;
+		for (int x = 0; x < 9; x++) {
+			for (int y = 0; y < 9; y++) {
+				score += getScore(gene[x][y], x, y);
+			} 
+		} 
+		return score / (double)243;
 	}
 
-	private double checkRow(int[][] board, int row, int column) {
-		double rowDuplicateCount = 0;
-		for (int i = 0; i < column; i++) {
-			for (int j = i + 1; j < column; j++) {
-				if (board[row][i] == board[row][j]) {
-					rowDuplicateCount++;
+	private double getScore(int value, int row, int column) {
+		double score = 3;
+		for (int i = 0; i < 9; i++) {
+			if(value == gene[row][i] && i != column) {
+				score--;
+				break;
+			}
+		}
+		
+		for (int i = 0; i < 9; i++) {
+			if(value == gene[i][column] && i != row) {
+				score--;
+				break;
+			}
+		}
+			
+		int startColumn = 3 * (column / 3);
+		int startRow = 3 * (row / 3);
+		for(int i = startRow; i < startRow + 3; i++) {
+			for(int j = startColumn; j < startColumn + 3; j++) {
+				if (gene[i / 3][i % 3] == gene[j / 3][j % 3] && ((i / 3 != j / 3) && (i % 3 != j % 3))) {
+					score--;
+					break;
 				}
 			}
 		}
-		return rowDuplicateCount;
-	}
-
-	private double checkColumn(int[][] board, int row, int column) {
-		double rowDuplicateCount = 0;
-		for (int i = 0; i < row; i++) {
-			for (int j = i + 1; j < row; j++) {
-				if (board[i][column] == board[j][column]) {
-					rowDuplicateCount++;
-				}
-			}
-		}
-		return rowDuplicateCount;
+		
+		return score;
 	}
 
 	public int[][] getGene() {
@@ -104,7 +107,7 @@ public class Chromosome {
 	public String toString() {
 		StringBuilder returnString = new StringBuilder("Chromosome [fitness=" + fitness + "]\n");
 		returnString.append("-------------------------\n");
-		//returnString = new StringBuilder();
+		// returnString = new StringBuilder();
 		for (int i = 0; i < gene.length; i++) {
 			for (int j = 0; j < gene.length; j++) {
 				if (j % 3 == 0) {
@@ -117,8 +120,10 @@ public class Chromosome {
 				returnString.append("|-----------------------|\n");
 		}
 		returnString.append("-------------------------");
-		/*for (int i = 0; i < gene.length; i++)
-			returnString.append(Arrays.toString(gene[i]));*/
+		/*
+		 * for (int i = 0; i < gene.length; i++)
+		 * returnString.append(Arrays.toString(gene[i]));
+		 */
 		return returnString.toString();
 	}
 
