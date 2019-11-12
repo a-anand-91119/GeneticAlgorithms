@@ -9,7 +9,7 @@ public class DriverClass {
 
 		int populationSize = 1000;
 		int tournamentPopulationSize = 500;
-		int noOfEliteChromosomes = 1;
+		int noOfEliteChromosomes = 10;
 		double crossoverRate = 0.5;
 		double mutationRate = 0.01;
 
