@@ -9,7 +9,7 @@ public class MainClass {
 
 		MainClass mainClass = new MainClass();
 
-		String expectedCharSequence = "To be or not to be, that is the question; Whether 'tis nobler in the mind to suffer. - A Anand";
+		String expectedCharSequence = "To be or not to be, that is the question; Whether 'tis nobler in the mind to suffer. - William Shakespeare";
 		int initialPopulationSize = 200;
 		double crossoverRate = 0.5;
 		double mutationRate = 0.01;
